@@ -2,15 +2,17 @@
 
 Vanilla Dream is a fashion career growth web game MVP bootstrap.
 
-This step implements only the `step01_bootstrap` scope:
+Current implemented scope:
 - Spring Boot backend skeleton
 - Next.js + TypeScript frontend skeleton
 - PostgreSQL connection configuration
 - Common API error response shape
 - Health check endpoint
+- Signup/login/me authentication API
+- JWT-based frontend login state and protected game route wrapper
 - README and env examples
 
-No gameplay business features are implemented yet beyond route/module placeholders and the health check.
+No gameplay business features are implemented yet beyond route/module placeholders and authentication.
 
 ## Stack
 
@@ -59,9 +61,13 @@ No gameplay business features are implemented yet beyond route/module placeholde
 Implemented:
 - Spring Boot application entry point
 - `GET /api/health`
-- CORS + permissive bootstrap security configuration
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- CORS + stateless JWT security configuration
 - common success envelope
 - common error response structure
+- Flyway migration for the `accounts` table
 - placeholder module packages for future MVP features
 
 ### Backend Environment
@@ -73,8 +79,10 @@ SERVER_PORT=8080
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/vanilla_dream
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=postgres
-SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_HIBERNATE_DDL_AUTO=validate
 APP_CORS_ALLOWED_ORIGIN=http://localhost:3000
+APP_JWT_SECRET=change-this-local-secret-to-a-long-random-string-at-least-32-bytes
+APP_JWT_EXPIRATION_MINUTES=120
 ```
 
 Note:
@@ -86,7 +94,9 @@ Note:
 Implemented:
 - Next.js App Router skeleton
 - landing page
-- login and signup pages
+- login and signup pages connected to the backend API
+- localStorage JWT token storage
+- protected route wrapper for authenticated game screens
 - placeholder routes for core MVP screens
 - lightweight API client
 - backend health status card
@@ -142,7 +152,7 @@ docker compose -p vanilla-dream up -d
 
 Requirements:
 - JDK 21+
-- Gradle installed locally
+- Use the included Gradle wrapper
 
 PowerShell example:
 
@@ -152,13 +162,23 @@ $env:SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/vanilla_dream"
 $env:SPRING_DATASOURCE_USERNAME="postgres"
 $env:SPRING_DATASOURCE_PASSWORD="postgres"
 $env:APP_CORS_ALLOWED_ORIGIN="http://localhost:3000"
-gradle bootRun
+$env:APP_JWT_SECRET="change-this-local-secret-to-a-long-random-string-at-least-32-bytes"
+$env:APP_JWT_EXPIRATION_MINUTES="120"
+.\gradlew.bat bootRun
 ```
 
 Health check:
 
 ```text
 GET http://localhost:8080/api/health
+```
+
+Auth endpoints:
+
+```text
+POST http://localhost:8080/api/auth/signup
+POST http://localhost:8080/api/auth/login
+GET  http://localhost:8080/api/auth/me
 ```
 
 ### 3. Run frontend
@@ -179,18 +199,15 @@ http://localhost:3000
 ## Next Steps
 
 Follow the remaining project order from the spec:
-1. Auth API and login/signup integration
-2. Character creation
-3. Job selection
-4. Quest/class/level progression
-5. Minigames
-6. Shop/inventory/outfit
-7. Promotion
-8. Lightweight social
+1. Character creation
+2. Job selection
+3. Quest/class/level progression
+4. Minigames
+5. Shop/inventory/outfit
+6. Promotion
+7. Lightweight social
 
 ## Notes
 
 - This workspace did not contain an existing runnable project, so the bootstrap was created from scratch.
-- Backend build files are ready, but the local environment currently does not have Gradle installed, so backend execution was not fully verified inside this session.
-- Frontend dependencies were not installed inside this session, so Next.js pages were scaffolded but not booted here.
 - In some Windows environments, Docker Compose may fail to derive a project name from non-ASCII folder names, so the compose file now sets `name: vanilla-dream` explicitly.
