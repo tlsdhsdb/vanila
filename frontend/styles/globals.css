@@ -1,0 +1,361 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f1e8;
+  --bg-accent: #efe4d2;
+  --panel: rgba(255, 251, 245, 0.84);
+  --panel-strong: #fff8ef;
+  --line: rgba(91, 69, 41, 0.14);
+  --text: #2a2218;
+  --muted: #6e6152;
+  --primary: #b85c38;
+  --primary-strong: #8f4527;
+  --secondary: #244a57;
+  --success: #2f6c51;
+  --warning: #8b6a26;
+  --danger: #9a3b35;
+  --shadow: 0 24px 60px rgba(70, 46, 21, 0.12);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --font-display: "Trebuchet MS", "Gill Sans", sans-serif;
+  --font-body: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.72), transparent 42%),
+    linear-gradient(145deg, #f9f4ee 0%, var(--bg-accent) 48%, #e7d8c4 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.site-shell,
+.game-layout,
+.auth-page {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.auth-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  padding: 32px;
+}
+
+.hero-copy h1,
+.content-panel h2,
+.auth-card h1,
+.status-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.95;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--primary-strong);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.lead,
+.muted,
+.route-card p,
+.placeholder-card p,
+.auth-card p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.lead {
+  margin-top: 18px;
+  max-width: 60ch;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.hero-summary,
+.placeholder-grid,
+.route-grid,
+.meta-list {
+  display: grid;
+  gap: 16px;
+}
+
+.hero-summary {
+  align-content: start;
+}
+
+.summary-card,
+.placeholder-card {
+  border: 1px solid rgba(36, 74, 87, 0.1);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  background: var(--panel-strong);
+}
+
+.summary-card span,
+.meta-list dt {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.summary-card strong,
+.meta-list dd {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.status-header,
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.status-pill {
+  align-self: start;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.status-pill.online {
+  color: #fff;
+  background: var(--success);
+}
+
+.status-pill.pending {
+  color: #fff;
+  background: var(--warning);
+}
+
+.status-pill.offline {
+  color: #fff;
+  background: var(--danger);
+}
+
+.meta-list {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin-top: 20px;
+}
+
+.route-section,
+.site-shell > .panel {
+  margin-top: 24px;
+  padding: 28px;
+}
+
+.route-grid {
+  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.route-card {
+  padding: 18px;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.route-card:hover,
+.nav-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(184, 92, 56, 0.3);
+}
+
+.route-card strong,
+.placeholder-card h3,
+.auth-card h1 {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.button-row,
+.inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button-row {
+  margin-top: 24px;
+}
+
+.button,
+.button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.button {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+}
+
+.button-secondary {
+  color: var(--secondary);
+  border-color: rgba(36, 74, 87, 0.2);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.game-layout {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+}
+
+.side-panel,
+.content-panel,
+.auth-card {
+  padding: 28px;
+}
+
+.game-navigation {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.nav-link {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.nav-link small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.checklist {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.auth-card {
+  width: min(100%, 520px);
+}
+
+.form-stack {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field span {
+  font-weight: 600;
+}
+
+.input {
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(91, 69, 41, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.inline-links {
+  margin-top: 18px;
+  color: var(--secondary);
+}
+
+.error-text {
+  margin-top: 16px;
+  color: var(--danger);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-shell,
+  .game-layout,
+  .auth-page {
+    width: min(100% - 20px, 1200px);
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+
+  .hero,
+  .side-panel,
+  .content-panel,
+  .route-section,
+  .site-shell > .panel,
+  .auth-card {
+    padding: 22px;
+  }
+
+  .hero-copy h1,
+  .content-panel h2,
+  .auth-card h1,
+  .status-header h2 {
+    font-size: clamp(1.8rem, 9vw, 3rem);
+  }
+}
