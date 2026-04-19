@@ -17,3 +17,19 @@ export interface HealthCheckResponse {
   timestamp: string;
 }
 
+export type AccountRole = "USER";
+
+export interface AccountResponse {
+  id: number;
+  email: string;
+  username: string;
+  role: AccountRole;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuthResponse {
+  tokenType: "Bearer";
+  accessToken: string;
+  account: AccountResponse;
+}

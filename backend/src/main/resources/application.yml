@@ -7,7 +7,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
     open-in-view: false
     properties:
       hibernate:
@@ -21,8 +21,10 @@ server:
 app:
   cors:
     allowed-origin: ${APP_CORS_ALLOWED_ORIGIN:http://localhost:3000}
+  jwt:
+    secret: ${APP_JWT_SECRET:change-this-local-secret-to-a-long-random-string-at-least-32-bytes}
+    expiration-minutes: ${APP_JWT_EXPIRATION_MINUTES:120}
 
 logging:
   level:
     org.hibernate.SQL: info
-

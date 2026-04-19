@@ -1,8 +1,9 @@
 import { API_BASE_URL } from "@/lib/config";
 
-type JsonBody = Record<string, unknown>;
+type JsonBody = object;
 
 type ApiRequestInit = Omit<RequestInit, "body"> & {
+  authToken?: string;
   body?: BodyInit | JsonBody;
 };
 
@@ -18,18 +19,23 @@ export class ApiClientError extends Error {
 
 async function request<T>(path: string, init: ApiRequestInit = {}): Promise<T> {
   const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
-  const headers = new Headers(init.headers);
+  const { authToken, body: requestBody, ...requestInit } = init;
+  const headers = new Headers(requestInit.headers);
   const body =
-    init.body && !(init.body instanceof FormData) && typeof init.body !== "string"
-      ? JSON.stringify(init.body)
-      : init.body;
+    requestBody && !(requestBody instanceof FormData) && typeof requestBody !== "string"
+      ? JSON.stringify(requestBody)
+      : requestBody;
 
   if (body && !(body instanceof FormData) && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
 
+  if (authToken) {
+    headers.set("Authorization", `Bearer ${authToken}`);
+  }
+
   const response = await fetch(url, {
-    ...init,
+    ...requestInit,
     headers,
     body,
     cache: "no-store",
@@ -56,3 +62,23 @@ export const apiClient = {
   },
 };
 
+export function getApiErrorMessage(error: unknown): string {
+  if (error instanceof ApiClientError) {
+    if (
+      error.payload &&
+      typeof error.payload === "object" &&
+      "message" in error.payload &&
+      typeof error.payload.message === "string"
+    ) {
+      return error.payload.message;
+    }
+
+    return error.message;
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "Request failed";
+}
