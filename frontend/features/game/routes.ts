@@ -24,7 +24,7 @@ export const gameRoutes: RouteDefinition[] = [
     description: "아바타 초기 생성 화면",
   },
   {
-    href: "/character/job",
+    href: "/job/select",
     label: "직업 선택",
     description: "Designer / MD / Model 선택 화면",
   },
@@ -69,4 +69,3 @@ export const gameRoutes: RouteDefinition[] = [
     description: "입문 → 수습 1단계 승급 화면 골격",
   },
 ];
-

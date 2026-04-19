@@ -44,7 +44,8 @@ a {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -119,6 +120,7 @@ input {
 .hero-summary,
 .placeholder-grid,
 .route-grid,
+.option-grid,
 .meta-list {
   display: grid;
   gap: 16px;
@@ -129,7 +131,8 @@ input {
 }
 
 .summary-card,
-.placeholder-card {
+.placeholder-card,
+.choice-card {
   border: 1px solid rgba(36, 74, 87, 0.1);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -197,22 +200,41 @@ input {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.option-grid {
+  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
 .route-card {
   padding: 18px;
   transition: transform 160ms ease, border-color 160ms ease;
 }
 
 .route-card:hover,
-.nav-link:hover {
+.nav-link:hover,
+.choice-card:hover {
   transform: translateY(-2px);
   border-color: rgba(184, 92, 56, 0.3);
 }
 
 .route-card strong,
 .placeholder-card h3,
+.choice-card h3,
 .auth-card h1 {
   display: block;
   margin-bottom: 8px;
+}
+
+.choice-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.choice-card p {
+  margin: 0;
+  line-height: 1.6;
 }
 
 .button-row,
