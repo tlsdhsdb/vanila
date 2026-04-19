@@ -102,6 +102,13 @@ public class AuthControllerTest {
             .andExpect(jsonPath("$.message").value("Authentication is required"));
     }
 
+    @Test
+    void unspecifiedApiRoutesRequireAuthentication() throws Exception {
+        mockMvc.perform(get("/api/characters"))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.message").value("Authentication is required"));
+    }
+
     private org.springframework.test.web.servlet.RequestBuilder signup(String email, String username) throws Exception {
         return post("/api/auth/signup")
             .contentType(MediaType.APPLICATION_JSON)

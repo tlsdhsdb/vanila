@@ -2,6 +2,7 @@ package com.vanilladream.backend.auth;
 
 import java.util.Locale;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,13 @@ public class AuthService {
             passwordEncoder.encode(request.password())
         );
 
-        Account savedAccount = accountRepository.save(account);
+        Account savedAccount;
+        try {
+            savedAccount = accountRepository.saveAndFlush(account);
+        } catch (DataIntegrityViolationException exception) {
+            throw new ApiException(HttpStatus.CONFLICT, "Email or username is already in use");
+        }
+
         return createAuthResponse(savedAccount);
     }
 
@@ -86,4 +93,3 @@ public class AuthService {
         return email.trim().toLowerCase(Locale.ROOT);
     }
 }
-
