@@ -10,9 +10,11 @@ Current implemented scope:
 - Health check endpoint
 - Signup/login/me authentication API
 - JWT-based frontend login state and protected game route wrapper
+- Character creation, current character lookup, appearance update, and one-time job selection
+- Frontend character creation and job selection flow after login
 - README and env examples
 
-No gameplay business features are implemented yet beyond route/module placeholders and authentication.
+Gameplay systems beyond character setup and job selection are not implemented yet.
 
 ## Stack
 
@@ -64,10 +66,14 @@ Implemented:
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
 - `GET /api/auth/me`
+- `POST /api/characters`
+- `GET /api/characters/me`
+- `PATCH /api/characters/me/appearance`
+- `POST /api/characters/me/job`
 - CORS + stateless JWT security configuration
 - common success envelope
 - common error response structure
-- Flyway migration for the `accounts` table
+- Flyway migrations for the `accounts`, `characters`, and `character_stats` tables
 - placeholder module packages for future MVP features
 
 ### Backend Environment
@@ -97,6 +103,9 @@ Implemented:
 - login and signup pages connected to the backend API
 - localStorage JWT token storage
 - protected route wrapper for authenticated game screens
+- character creation page connected to the backend API
+- job selection page connected to the backend API
+- plaza entry flow that redirects to character creation or job selection when needed
 - placeholder routes for core MVP screens
 - lightweight API client
 - backend health status card
@@ -181,6 +190,15 @@ POST http://localhost:8080/api/auth/login
 GET  http://localhost:8080/api/auth/me
 ```
 
+Character endpoints:
+
+```text
+POST  http://localhost:8080/api/characters
+GET   http://localhost:8080/api/characters/me
+PATCH http://localhost:8080/api/characters/me/appearance
+POST  http://localhost:8080/api/characters/me/job
+```
+
 ### 3. Run frontend
 
 ```powershell
@@ -199,13 +217,11 @@ http://localhost:3000
 ## Next Steps
 
 Follow the remaining project order from the spec:
-1. Character creation
-2. Job selection
-3. Quest/class/level progression
-4. Minigames
-5. Shop/inventory/outfit
-6. Promotion
-7. Lightweight social
+1. Quest/class/level progression
+2. Minigames
+3. Shop/inventory/outfit
+4. Promotion
+5. Lightweight social
 
 ## Notes
 
