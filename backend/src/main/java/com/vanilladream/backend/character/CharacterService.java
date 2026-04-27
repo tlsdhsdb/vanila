@@ -83,7 +83,12 @@ public class CharacterService {
             .stream()
             .map(statType -> CharacterStat.createStartingStat(savedCharacter.getId(), statType))
             .toList();
-        List<CharacterStat> savedStats = characterStatRepository.saveAll(stats);
+        List<CharacterStat> savedStats;
+        try {
+            savedStats = characterStatRepository.saveAllAndFlush(stats);
+        } catch (DataIntegrityViolationException exception) {
+            throw new ApiException(HttpStatus.CONFLICT, "Job is already selected");
+        }
 
         return CharacterResponse.from(savedCharacter, savedStats);
     }
