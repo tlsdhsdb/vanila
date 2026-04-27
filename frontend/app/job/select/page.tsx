@@ -13,7 +13,7 @@ import {
 } from "@/features/character/character-api";
 import { jobOptions } from "@/features/character/character-options";
 import { clearAuthToken, getAuthToken } from "@/features/auth/auth-storage";
-import { getApiErrorMessage } from "@/lib/api-client";
+import { getApiErrorMessage, isAuthenticationError } from "@/lib/api-client";
 import type { CharacterJob, CharacterResponse } from "@/types/api";
 
 export default function JobSelectPage() {
@@ -51,8 +51,14 @@ export default function JobSelectPage() {
           return;
         }
 
-        clearAuthToken();
-        router.replace("/login");
+        if (isAuthenticationError(caughtError)) {
+          clearAuthToken();
+          router.replace("/login");
+          return;
+        }
+
+        setError(getApiErrorMessage(caughtError));
+        setIsChecking(false);
       }
     }
 

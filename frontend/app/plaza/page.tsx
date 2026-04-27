@@ -8,7 +8,7 @@ import { GameNavigation } from "@/components/game-navigation";
 import { ProtectedRoute } from "@/components/protected-route";
 import { fetchCurrentCharacter, isCharacterMissingError } from "@/features/character/character-api";
 import { clearAuthToken, getAuthToken } from "@/features/auth/auth-storage";
-import { getApiErrorMessage } from "@/lib/api-client";
+import { getApiErrorMessage, isAuthenticationError } from "@/lib/api-client";
 import type { CharacterResponse } from "@/types/api";
 
 export default function PlazaPage() {
@@ -52,9 +52,14 @@ export default function PlazaPage() {
           return;
         }
 
-        clearAuthToken();
+        if (isAuthenticationError(caughtError)) {
+          clearAuthToken();
+          router.replace("/login");
+          return;
+        }
+
         setError(getApiErrorMessage(caughtError));
-        router.replace("/login");
+        setIsChecking(false);
       }
     }
 

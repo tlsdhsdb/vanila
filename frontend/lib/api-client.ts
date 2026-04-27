@@ -82,3 +82,7 @@ export function getApiErrorMessage(error: unknown): string {
 
   return "Request failed";
 }
+
+export function isAuthenticationError(error: unknown): boolean {
+  return error instanceof ApiClientError && (error.status === 401 || error.status === 403);
+}

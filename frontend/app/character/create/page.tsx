@@ -17,7 +17,7 @@ import {
   skinToneOptions,
 } from "@/features/character/character-options";
 import { clearAuthToken, getAuthToken } from "@/features/auth/auth-storage";
-import { getApiErrorMessage } from "@/lib/api-client";
+import { getApiErrorMessage, isAuthenticationError } from "@/lib/api-client";
 import type { FacePreset, HairColor, HairStyle, SkinTone } from "@/types/api";
 
 export default function CharacterCreatePage() {
@@ -27,7 +27,8 @@ export default function CharacterCreatePage() {
   const [hairStyle, setHairStyle] = useState<HairStyle>("BOB");
   const [hairColor, setHairColor] = useState<HairColor>("BROWN");
   const [facePreset, setFacePreset] = useState<FacePreset>("SOFT");
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -60,8 +61,14 @@ export default function CharacterCreatePage() {
           return;
         }
 
-        clearAuthToken();
-        router.replace("/login");
+        if (isAuthenticationError(caughtError)) {
+          clearAuthToken();
+          router.replace("/login");
+          return;
+        }
+
+        setLoadError(getApiErrorMessage(caughtError));
+        setIsChecking(false);
       }
     }
 
@@ -74,10 +81,10 @@ export default function CharacterCreatePage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError(null);
+    setSubmitError(null);
 
     if (name.trim().length < 2) {
-      setError("캐릭터 이름은 2자 이상 입력해 주세요.");
+      setSubmitError("캐릭터 이름은 2자 이상 입력해 주세요.");
       return;
     }
 
@@ -100,7 +107,7 @@ export default function CharacterCreatePage() {
       });
       router.push("/job/select");
     } catch (caughtError) {
-      setError(getApiErrorMessage(caughtError));
+      setSubmitError(getApiErrorMessage(caughtError));
     } finally {
       setIsSubmitting(false);
     }
@@ -118,6 +125,8 @@ export default function CharacterCreatePage() {
 
           {isChecking ? (
             <p className="form-message">캐릭터 상태를 확인하는 중입니다.</p>
+          ) : loadError ? (
+            <p className="form-message error">{loadError}</p>
           ) : (
             <form className="form-stack" onSubmit={handleSubmit}>
               <label className="form-field">
@@ -194,7 +203,7 @@ export default function CharacterCreatePage() {
                 </select>
               </label>
 
-              {error && <p className="form-message error">{error}</p>}
+              {submitError && <p className="form-message error">{submitError}</p>}
 
               <button className="button" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "생성 중..." : "캐릭터 생성"}
