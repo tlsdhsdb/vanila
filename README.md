@@ -11,10 +11,12 @@ Current implemented scope:
 - Signup/login/me authentication API
 - JWT-based frontend login state and protected game route wrapper
 - Character creation, current character lookup, appearance update, and one-time job selection
-- Frontend character creation and job selection flow after login
+- Quest list, quest progress overview, quest reward claim flow
+- Job class list, class taking flow, EXP gain, level-up handling, and job stat growth
+- Frontend character creation, job selection, plaza, quest journal, and academy flow after login
 - README and env examples
 
-Gameplay systems beyond character setup and job selection are not implemented yet.
+Gameplay systems beyond quest/class progression are not implemented yet.
 
 ## Stack
 
@@ -36,6 +38,7 @@ Gameplay systems beyond character setup and job selection are not implemented ye
 |       |   |-- config
 |       |   |-- auth
 |       |   |-- character
+|       |   |-- jobclass
 |       |   |-- quest
 |       |   |-- minigame
 |       |   |-- shop
@@ -70,10 +73,18 @@ Implemented:
 - `GET /api/characters/me`
 - `PATCH /api/characters/me/appearance`
 - `POST /api/characters/me/job`
+- `GET /api/quests`
+- `GET /api/quests/active`
+- `POST /api/quests/{questId}/claim`
+- `GET /api/quests/progress`
+- `GET /api/classes`
+- `POST /api/classes/{classId}/take`
 - CORS + stateless JWT security configuration
 - common success envelope
 - common error response structure
-- Flyway migrations for the `accounts`, `characters`, and `character_stats` tables
+- Flyway migrations for the `accounts`, `characters`, `character_stats`, `quests`, `character_quests`, `job_classes`, and `job_class_stat_rewards` tables
+- seed data for step04 quests and per-job academy classes
+- server-side EXP/level progression with MVP level cap 10
 - placeholder module packages for future MVP features
 
 ### Backend Environment
@@ -106,6 +117,8 @@ Implemented:
 - character creation page connected to the backend API
 - job selection page connected to the backend API
 - plaza entry flow that redirects to character creation or job selection when needed
+- quest journal page connected to quest list, progress, and reward claim APIs
+- academy page connected to class list and class taking APIs
 - placeholder routes for core MVP screens
 - lightweight API client
 - backend health status card
@@ -199,6 +212,22 @@ PATCH http://localhost:8080/api/characters/me/appearance
 POST  http://localhost:8080/api/characters/me/job
 ```
 
+Quest endpoints:
+
+```text
+GET  http://localhost:8080/api/quests
+GET  http://localhost:8080/api/quests/active
+POST http://localhost:8080/api/quests/{questId}/claim
+GET  http://localhost:8080/api/quests/progress
+```
+
+Academy endpoints:
+
+```text
+GET  http://localhost:8080/api/classes
+POST http://localhost:8080/api/classes/{classId}/take
+```
+
 ### 3. Run frontend
 
 ```powershell
@@ -214,14 +243,25 @@ Open:
 http://localhost:3000
 ```
 
+Recommended flow:
+
+```text
+signup -> create character -> choose job -> plaza -> quests / academy
+```
+
 ## Next Steps
 
 Follow the remaining project order from the spec:
-1. Quest/class/level progression
-2. Minigames
-3. Shop/inventory/outfit
-4. Promotion
-5. Lightweight social
+1. Minigames
+2. Shop/inventory/outfit
+3. Promotion
+4. Lightweight social
+
+## Step04 Notes
+
+- The quest seed includes future-step quest entries for minigames and shopping so the progression order is visible early.
+- Only step04 quest actions are fully playable right now: auto-completing early onboarding quests, claiming rewards, and taking academy classes.
+- Promotion, shopping, and minigame quest targets are not implemented yet.
 
 ## Notes
 
