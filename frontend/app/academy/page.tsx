@@ -35,10 +35,7 @@ export default function AcademyPage() {
       }
 
       try {
-        const [currentCharacter, classes] = await Promise.all([
-          fetchCurrentCharacter(token),
-          fetchJobClasses(token),
-        ]);
+        const currentCharacter = await fetchCurrentCharacter(token);
 
         if (!isMounted) {
           return;
@@ -46,6 +43,12 @@ export default function AcademyPage() {
 
         if (!currentCharacter.job) {
           router.replace("/job/select");
+          return;
+        }
+
+        const classes = await fetchJobClasses(token);
+
+        if (!isMounted) {
           return;
         }
 
@@ -100,9 +103,7 @@ export default function AcademyPage() {
       setJobClasses(refreshedClasses);
       setRecentClassResult(result);
       setIsResultDialogOpen(true);
-      setFeedback(
-        `${result.jobClass.name} 수강이 완료되었습니다. EXP +${result.rewardExp}, 비즈 -${result.spentBeads}`,
-      );
+      setFeedback(`${result.jobClass.name} 수강이 완료되었습니다. EXP +${result.rewardExp}, 비즈 -${result.spentBeads}`);
     } catch (caughtError) {
       setError(getApiErrorMessage(caughtError));
     } finally {
@@ -117,9 +118,7 @@ export default function AcademyPage() {
           <aside className="panel side-panel">
             <p className="eyebrow">Vanilla Dream</p>
             <h1>아카데미</h1>
-            <p className="muted">
-              직업 수업을 듣고 EXP를 쌓아 현재 직업에 맞는 스탯을 성장시킬 수 있습니다.
-            </p>
+            <p className="muted">직업 수업을 듣고 EXP를 쌓아 현재 직업에 맞는 스탯을 성장시킬 수 있습니다.</p>
             <GameNavigation />
           </aside>
 
@@ -156,9 +155,7 @@ export default function AcademyPage() {
                   <header>
                     <div>
                       <h3>현재 직업 스탯</h3>
-                      <p className="muted">
-                        수업을 들으면 {character.name}의 직업 스탯이 즉시 반영됩니다.
-                      </p>
+                      <p className="muted">수업을 들으면 {character.name}의 직업 스탯에 즉시 반영됩니다.</p>
                     </div>
                   </header>
                   <div className="tag-list">
@@ -265,7 +262,7 @@ export default function AcademyPage() {
                 </div>
                 {recentClassResult.leveledUp && (
                   <div className="reward-row">
-                    <span>레벨업</span>
+                    <span>레벨 업</span>
                     <strong>
                       {recentClassResult.previousLevel} → {recentClassResult.currentLevel}
                     </strong>
