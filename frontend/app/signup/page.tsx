@@ -43,11 +43,11 @@ export default function SignupPage() {
 
   function validateForm() {
     if (!email.includes("@")) {
-      return "올바른 이메일을 입력해 주세요.";
+      return "올바른 이메일 주소를 입력해 주세요.";
     }
 
     if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
-      return "username은 3~20자의 영문, 숫자, 밑줄만 사용할 수 있습니다.";
+      return "아이디는 3~20자의 영문, 숫자, 밑줄만 사용할 수 있습니다.";
     }
 
     if (password.length < 8) {
@@ -64,9 +64,11 @@ export default function SignupPage() {
   return (
     <main className="auth-page">
       <section className="panel auth-card">
-        <p className="eyebrow">Public screen</p>
+        <p className="eyebrow">공개 화면</p>
         <h1>회원가입</h1>
-        <p className="lead">계정을 만든 뒤 캐릭터 생성 화면으로 이동합니다.</p>
+        <p className="lead">
+          계정을 만든 뒤 바로 캐릭터 생성 단계로 이동합니다.
+        </p>
 
         <form className="form-stack" onSubmit={handleSubmit}>
           <label className="form-field">
@@ -82,7 +84,7 @@ export default function SignupPage() {
             />
           </label>
           <label className="form-field">
-            <span>Username</span>
+            <span>아이디</span>
             <input
               className="input"
               name="username"
@@ -121,16 +123,15 @@ export default function SignupPage() {
           {error && <p className="form-message error">{error}</p>}
 
           <button className="button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "가입 중..." : "회원가입"}
+            {isSubmitting ? "계정 생성 중..." : "회원가입"}
           </button>
         </form>
 
         <div className="inline-links">
           <Link href="/login">로그인으로 이동</Link>
-          <Link href="/">랜딩으로 돌아가기</Link>
+          <Link href="/">첫 화면으로 돌아가기</Link>
         </div>
       </section>
     </main>
   );
 }
-

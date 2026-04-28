@@ -57,9 +57,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <main className="auth-page">
         <section className="panel auth-card">
-          <p className="eyebrow">Auth check</p>
-          <h1>Checking session</h1>
-          <p className="lead">{error ?? "로그인 상태를 확인하는 중입니다."}</p>
+          <p className="eyebrow">인증 확인</p>
+          <h1>세션 확인 중</h1>
+          <p className="lead">{error ?? "현재 로그인 세션을 확인하고 있습니다."}</p>
         </section>
       </main>
     );

@@ -117,14 +117,14 @@ export default function CharacterCreatePage() {
     <ProtectedRoute>
       <main className="auth-page">
         <section className="panel auth-card">
-          <p className="eyebrow">Character setup</p>
+          <p className="eyebrow">캐릭터 설정</p>
           <h1>캐릭터 생성</h1>
           <p className="lead">
-            Vanilla Dream에 도착한 첫 캐릭터를 만들고, 다음 단계에서 직업을 선택합니다.
+            첫 캐릭터를 만들고, 다음 단계에서 직업을 선택해 본격적인 진행을 시작합니다.
           </p>
 
           {isChecking ? (
-            <p className="form-message">캐릭터 상태를 확인하는 중입니다.</p>
+            <p className="form-message">이미 생성된 캐릭터가 있는지 확인하고 있습니다.</p>
           ) : loadError ? (
             <p className="form-message error">{loadError}</p>
           ) : (
@@ -136,7 +136,7 @@ export default function CharacterCreatePage() {
                   name="name"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
-                  placeholder="Lina"
+                  placeholder="리나"
                   minLength={2}
                   maxLength={20}
                   required

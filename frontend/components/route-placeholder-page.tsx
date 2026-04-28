@@ -19,29 +19,29 @@ export function RoutePlaceholderPage({
       <main className="game-layout">
         <aside className="panel side-panel">
           <p className="eyebrow">Vanilla Dream</p>
-          <h1>Game MVP Skeleton</h1>
+          <h1>MVP 준비 화면</h1>
           <p className="muted">
-            인증된 플레이어만 접근하는 MVP 화면 골격입니다.
+            현재 단계에서는 핵심 진행 루프만 연결되어 있으며, 이 화면은 다음 단계 구현을 위한 자리입니다.
           </p>
           <GameNavigation />
         </aside>
 
         <section className="panel content-panel">
-          <p className="eyebrow">Screen Placeholder</p>
+          <p className="eyebrow">준비 중 화면</p>
           <h2>{title}</h2>
           <p className="lead">{description}</p>
 
           <div className="placeholder-grid">
             <article className="placeholder-card">
-              <h3>Current focus</h3>
+              <h3>현재 초점</h3>
               <p>{focus}</p>
             </article>
             <article className="placeholder-card">
-              <h3>Auth notes</h3>
+              <h3>인증 안내</h3>
               <ul className="checklist">
-                <li>이 화면은 저장된 토큰으로 /api/auth/me 확인 후 표시됩니다.</li>
-                <li>게임 비즈니스 로직은 아직 연결하지 않았습니다.</li>
-                <li>인증 실패 시 로그인 화면으로 돌아갑니다.</li>
+                <li>이 화면은 로그인된 상태에서만 접근할 수 있습니다.</li>
+                <li>현재 단계에서는 실제 비즈니스 로직이 아직 연결되지 않았습니다.</li>
+                <li>인증이 만료되면 로그인 화면으로 다시 이동합니다.</li>
               </ul>
             </article>
           </div>
@@ -51,7 +51,7 @@ export function RoutePlaceholderPage({
               메인 플라자로 이동
             </Link>
             <Link className="button button-secondary" href="/">
-              랜딩으로 돌아가기
+              첫 화면으로 돌아가기
             </Link>
           </div>
         </section>

@@ -8,34 +8,34 @@ export default function HomePage() {
     <main className="site-shell">
       <section className="hero panel">
         <div className="hero-copy">
-          <p className="eyebrow">Portfolio MVP</p>
+          <p className="eyebrow">포트폴리오 MVP</p>
           <h1>Vanilla Dream</h1>
           <p className="lead">
-            패션 도시에서 커리어를 키우는 웹게임 MVP를 위한 초기 부트스트랩입니다.
-            인증, 캐릭터 성장, 미니게임, 상점, 소셜 허브가 들어갈 자리를 먼저 고정했습니다.
+            계정 인증, 캐릭터 생성, 직업 선택, 퀘스트 진행, 아카데미 수업까지 하나의 웹 게임
+            흐름으로 연결한 패션 커리어 성장 게임 MVP입니다.
           </p>
           <div className="button-row">
             <Link className="button" href="/login">
-              로그인 화면
+              로그인하러 가기
             </Link>
             <Link className="button button-secondary" href="/plaza">
-              게임 허브 보기
+              플라자 바로 보기
             </Link>
           </div>
         </div>
 
         <div className="hero-summary">
           <div className="summary-card">
-            <span>Stack</span>
+            <span>프론트엔드</span>
             <strong>Next.js App Router + TypeScript</strong>
           </div>
           <div className="summary-card">
-            <span>API</span>
-            <strong>REST client ready</strong>
+            <span>백엔드</span>
+            <strong>Spring Boot REST + JWT</strong>
           </div>
           <div className="summary-card">
-            <span>Scope</span>
-            <strong>step01 bootstrap only</strong>
+            <span>현재 단계</span>
+            <strong>step04 퀘스트/수업 진행 루프</strong>
           </div>
         </div>
       </section>
@@ -44,8 +44,8 @@ export default function HomePage() {
 
       <section className="route-section">
         <div className="section-heading">
-          <p className="eyebrow">Public routes</p>
-          <h2>공개 화면 골격</h2>
+          <p className="eyebrow">공개 화면</p>
+          <h2>시작 동선</h2>
         </div>
         <div className="route-grid">
           {publicRoutes.map((route) => (
@@ -59,8 +59,8 @@ export default function HomePage() {
 
       <section className="route-section">
         <div className="section-heading">
-          <p className="eyebrow">Game routes</p>
-          <h2>MVP 화면 맵</h2>
+          <p className="eyebrow">게임 화면</p>
+          <h2>현재 플레이 가능한 흐름</h2>
         </div>
         <div className="route-grid">
           {gameRoutes.map((route) => (
@@ -74,4 +74,3 @@ export default function HomePage() {
     </main>
   );
 }
-

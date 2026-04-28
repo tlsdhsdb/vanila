@@ -11,7 +11,7 @@ import {
   isCharacterMissingError,
   selectCharacterJob,
 } from "@/features/character/character-api";
-import { jobOptions } from "@/features/character/character-options";
+import { jobLabelMap, jobOptions } from "@/features/character/character-options";
 import { clearAuthToken, getAuthToken } from "@/features/auth/auth-storage";
 import { getApiErrorMessage, isAuthenticationError } from "@/lib/api-client";
 import type { CharacterJob, CharacterResponse } from "@/types/api";
@@ -96,21 +96,21 @@ export default function JobSelectPage() {
       <main className="game-layout">
         <aside className="panel side-panel">
           <p className="eyebrow">Vanilla Dream</p>
-          <h1>Job Select</h1>
-          <p className="muted">MVP에서는 직업을 한 번만 선택할 수 있습니다.</p>
+          <h1>직업 선택</h1>
+          <p className="muted">MVP에서는 첫 직업을 한 번만 선택할 수 있습니다.</p>
           <GameNavigation />
         </aside>
 
         <section className="panel content-panel">
-          <p className="eyebrow">Career start</p>
-          <h2>직업 선택</h2>
+          <p className="eyebrow">커리어 시작</p>
+          <h2>첫 직업을 골라 주세요</h2>
 
-          {isChecking && <p className="lead">캐릭터 정보를 확인하는 중입니다.</p>}
+          {isChecking && <p className="lead">현재 캐릭터 상태를 확인하고 있습니다.</p>}
 
           {!isChecking && character?.job && (
             <div className="placeholder-card">
-              <h3>{character.name}의 직업은 이미 선택되었습니다.</h3>
-              <p>현재 직업: {character.job}</p>
+              <h3>{character.name}의 직업은 이미 선택되어 있습니다.</h3>
+              <p>현재 직업: {jobLabelMap[character.job]}</p>
               <div className="button-row">
                 <Link className="button" href="/plaza">
                   메인 플라자로 이동
@@ -122,7 +122,8 @@ export default function JobSelectPage() {
           {!isChecking && character && !character.job && (
             <>
               <p className="lead">
-                {character.name}의 첫 커리어를 선택하세요. 선택 후에는 변경할 수 없습니다.
+                {character.name}의 첫 커리어를 선택해 주세요. 현재 MVP에서는 이 선택을 다시 바꿀 수
+                없습니다.
               </p>
 
               <div className="option-grid">

@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError(null);
 
     if (!email.includes("@") || password.length === 0) {
-      setError("이메일과 비밀번호를 입력해 주세요.");
+      setError("이메일과 비밀번호를 모두 입력해 주세요.");
       return;
     }
 
@@ -40,9 +40,11 @@ export default function LoginPage() {
   return (
     <main className="auth-page">
       <section className="panel auth-card">
-        <p className="eyebrow">Public screen</p>
+        <p className="eyebrow">공개 화면</p>
         <h1>로그인</h1>
-        <p className="lead">Vanilla Dream 계정으로 접속해 보호된 게임 화면으로 이동합니다.</p>
+        <p className="lead">
+          바닐라드림 계정으로 로그인하고 보호된 게임 화면으로 이동합니다.
+        </p>
 
         <form className="form-stack" onSubmit={handleSubmit}>
           <label className="form-field">
@@ -78,11 +80,10 @@ export default function LoginPage() {
         </form>
 
         <div className="inline-links">
-          <Link href="/signup">회원가입으로 이동</Link>
-          <Link href="/">랜딩으로 돌아가기</Link>
+          <Link href="/signup">회원가입하기</Link>
+          <Link href="/">첫 화면으로 돌아가기</Link>
         </div>
       </section>
     </main>
   );
 }
-

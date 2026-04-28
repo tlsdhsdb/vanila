@@ -10,11 +10,11 @@ export function HealthStatusCard() {
     <section className="panel">
       <div className="status-header">
         <div>
-          <p className="eyebrow">Backend health</p>
+          <p className="eyebrow">백엔드 상태</p>
           <h2>API 연결 확인</h2>
         </div>
         <span className={`status-pill ${data ? "online" : error ? "offline" : "pending"}`}>
-          {data ? "Online" : error ? "Offline" : "Checking"}
+          {data ? "연결됨" : error ? "오프라인" : "확인 중"}
         </span>
       </div>
       <p className="muted">기본 연결 주소: {API_BASE_URL}</p>
@@ -22,25 +22,24 @@ export function HealthStatusCard() {
       {data && (
         <dl className="meta-list">
           <div>
-            <dt>Status</dt>
+            <dt>상태</dt>
             <dd>{data.status}</dd>
           </div>
           <div>
-            <dt>Application</dt>
+            <dt>애플리케이션</dt>
             <dd>{data.application}</dd>
           </div>
           <div>
-            <dt>Timestamp</dt>
+            <dt>시간</dt>
             <dd>{new Date(data.timestamp).toLocaleString("ko-KR")}</dd>
           </div>
         </dl>
       )}
       {error && (
         <p className="error-text">
-          백엔드가 아직 실행 중이 아니거나 환경 변수가 맞지 않습니다. ({error})
+          백엔드가 아직 실행 중이 아니거나 연결 설정이 맞지 않습니다. ({error})
         </p>
       )}
     </section>
   );
 }
-
