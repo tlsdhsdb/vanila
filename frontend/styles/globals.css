@@ -121,6 +121,9 @@ select {
 .placeholder-grid,
 .route-grid,
 .option-grid,
+.summary-grid,
+.section-stack,
+.detail-stack,
 .meta-list {
   display: grid;
   gap: 16px;
@@ -205,6 +208,16 @@ select {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.summary-grid {
+  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.section-stack,
+.detail-stack {
+  margin-top: 24px;
+}
+
 .route-card {
   padding: 18px;
   transition: transform 160ms ease, border-color 160ms ease;
@@ -235,6 +248,123 @@ select {
 .choice-card p {
   margin: 0;
   line-height: 1.6;
+}
+
+.detail-card {
+  border: 1px solid rgba(36, 74, 87, 0.1);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  background: var(--panel-strong);
+}
+
+.detail-card.nested {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.detail-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.detail-card h3 {
+  margin: 0 0 8px;
+}
+
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(42, 34, 24, 0.42);
+  backdrop-filter: blur(8px);
+}
+
+.dialog-card {
+  width: min(100%, 560px);
+  padding: 28px;
+}
+
+.split-inline,
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.split-inline {
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.tag-list {
+  margin-top: 16px;
+}
+
+.reward-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.reward-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(36, 74, 87, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.reward-row span {
+  color: var(--muted);
+}
+
+.reward-row strong {
+  font-size: 1rem;
+}
+
+.tag-pill,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.tag-pill {
+  color: var(--secondary);
+  background: rgba(36, 74, 87, 0.08);
+}
+
+.status-badge {
+  color: #fff;
+}
+
+.status-badge.locked {
+  background: #8c7a67;
+}
+
+.status-badge.active {
+  background: var(--secondary);
+}
+
+.status-badge.completed {
+  background: var(--warning);
+}
+
+.status-badge.claimed {
+  background: var(--success);
 }
 
 .button-row,
