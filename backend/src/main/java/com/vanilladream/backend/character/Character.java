@@ -135,6 +135,39 @@ public class Character {
         markActive();
     }
 
+    public void addBeads(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Beads amount must be positive");
+        }
+
+        this.beads += amount;
+        markActive();
+    }
+
+    public void spendBeads(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Beads amount must be positive");
+        }
+
+        this.beads -= amount;
+        markActive();
+    }
+
+    public void gainExp(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("EXP amount must be positive");
+        }
+
+        this.exp += amount;
+        this.level = CharacterLevelPolicy.resolveLevel(this.exp);
+        markActive();
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+        markActive();
+    }
+
     @PrePersist
     void onCreate() {
         LocalDateTime now = LocalDateTime.now();

@@ -11,6 +11,7 @@ import com.vanilladream.backend.character.dto.AppearanceUpdateRequest;
 import com.vanilladream.backend.character.dto.CharacterCreateRequest;
 import com.vanilladream.backend.character.dto.CharacterResponse;
 import com.vanilladream.backend.common.exception.ApiException;
+import com.vanilladream.backend.quest.QuestProgressService;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,13 +19,16 @@ public class CharacterService {
 
     private final CharacterRepository characterRepository;
     private final CharacterStatRepository characterStatRepository;
+    private final QuestProgressService questProgressService;
 
     public CharacterService(
         CharacterRepository characterRepository,
-        CharacterStatRepository characterStatRepository
+        CharacterStatRepository characterStatRepository,
+        QuestProgressService questProgressService
     ) {
         this.characterRepository = characterRepository;
         this.characterStatRepository = characterStatRepository;
+        this.questProgressService = questProgressService;
     }
 
     @Transactional
@@ -47,6 +51,7 @@ public class CharacterService {
         } catch (DataIntegrityViolationException exception) {
             throw new ApiException(HttpStatus.CONFLICT, "Character already exists");
         }
+        questProgressService.syncQuests(savedCharacter);
 
         return CharacterResponse.from(savedCharacter, List.of());
     }
@@ -89,6 +94,7 @@ public class CharacterService {
         } catch (DataIntegrityViolationException exception) {
             throw new ApiException(HttpStatus.CONFLICT, "Job is already selected");
         }
+        questProgressService.syncQuests(savedCharacter);
 
         return CharacterResponse.from(savedCharacter, savedStats);
     }

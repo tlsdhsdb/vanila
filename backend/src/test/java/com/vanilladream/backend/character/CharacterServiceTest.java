@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 
 import com.vanilladream.backend.common.exception.ApiException;
+import com.vanilladream.backend.quest.QuestProgressService;
 
 class CharacterServiceTest {
 
@@ -20,7 +21,12 @@ class CharacterServiceTest {
     void selectJobMapsDuplicateStatConflict() {
         CharacterRepository characterRepository = mock(CharacterRepository.class);
         CharacterStatRepository characterStatRepository = mock(CharacterStatRepository.class);
-        CharacterService characterService = new CharacterService(characterRepository, characterStatRepository);
+        QuestProgressService questProgressService = mock(QuestProgressService.class);
+        CharacterService characterService = new CharacterService(
+            characterRepository,
+            characterStatRepository,
+            questProgressService
+        );
         Character character = Character.create(
             1L,
             "Lina",

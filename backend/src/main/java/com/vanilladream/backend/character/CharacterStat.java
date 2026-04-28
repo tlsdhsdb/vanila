@@ -48,6 +48,14 @@ public class CharacterStat {
         return new CharacterStat(characterId, statType, STARTING_VALUE);
     }
 
+    public void increaseBy(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Stat reward amount must be positive");
+        }
+
+        this.value += amount;
+    }
+
     public Long getId() {
         return id;
     }
