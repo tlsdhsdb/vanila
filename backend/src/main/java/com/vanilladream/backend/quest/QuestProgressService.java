@@ -52,7 +52,7 @@ public class QuestProgressService {
         List<QuestProgressView> syncedQuests = syncQuests(character);
 
         for (QuestProgressView questView : syncedQuests) {
-            if (questView.characterQuest().isTrackable() && questView.quest().matchesTarget(targetType, targetId)) {
+            if (!questView.characterQuest().isClaimed() && questView.quest().matchesTarget(targetType, targetId)) {
                 questView.characterQuest().increaseProgress(amount);
             }
         }

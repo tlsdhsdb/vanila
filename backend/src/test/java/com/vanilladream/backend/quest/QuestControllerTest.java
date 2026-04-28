@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Map;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,7 +39,7 @@ class QuestControllerTest {
         mockMvc.perform(createCharacter(token, "Lina"))
             .andExpect(status().isCreated());
 
-        long questId = getFirstActiveQuestId(token);
+        long questId = getQuestIdByCode(token, "NEW_ROOM_NEW_START");
 
         mockMvc.perform(post("/api/quests/{questId}/claim", questId)
                 .header(HttpHeaders.AUTHORIZATION, bearer(token)))
@@ -62,7 +63,7 @@ class QuestControllerTest {
         mockMvc.perform(createCharacter(token, "Nari"))
             .andExpect(status().isCreated());
 
-        long questId = getFirstActiveQuestId(token);
+        long questId = getQuestIdByCode(token, "NEW_ROOM_NEW_START");
 
         mockMvc.perform(post("/api/quests/{questId}/claim", questId)
                 .header(HttpHeaders.AUTHORIZATION, bearer(token)))
@@ -99,15 +100,80 @@ class QuestControllerTest {
             .andExpect(status().isOk());
     }
 
-    private long getFirstActiveQuestId(String token) throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/quests/active")
+    @Test
+    void firstClassQuestCompletesAfterPrerequisitesAreClaimedEvenIfClassWasTakenEarly() throws Exception {
+        String token = signupAndExtractToken("quest-early-class@example.com", "quest_early_class");
+
+        mockMvc.perform(createCharacter(token, "Sori"))
+            .andExpect(status().isCreated());
+
+        mockMvc.perform(selectJob(token, "DESIGNER"))
+            .andExpect(status().isOk());
+
+        long classId = getFirstClassId(token);
+
+        mockMvc.perform(post("/api/classes/{classId}/take", classId)
+                .header(HttpHeaders.AUTHORIZATION, bearer(token)))
+            .andExpect(status().isOk());
+
+        claimQuest(token, "NEW_ROOM_NEW_START");
+        claimQuest(token, "EXPLORE_THE_MAIN_PLAZA");
+        claimQuest(token, "MEET_YOUR_JOB_MENTOR");
+
+        JsonNode firstClassQuest = getQuestByCode(token, "TAKE_YOUR_FIRST_CLASS");
+
+        Assertions.assertThat(firstClassQuest).isNotNull();
+        Assertions.assertThat(firstClassQuest.path("status").asText()).isEqualTo("COMPLETED");
+        Assertions.assertThat(firstClassQuest.path("progressCount").asInt()).isEqualTo(1);
+        Assertions.assertThat(firstClassQuest.path("claimable").asBoolean()).isTrue();
+    }
+
+    private JsonNode getQuestByCode(String token, String questCode) throws Exception {
+        MvcResult result = mockMvc.perform(get("/api/quests")
                 .header(HttpHeaders.AUTHORIZATION, bearer(token)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data[0].title").value("새 방, 새로운 시작"))
+            .andReturn();
+
+        JsonNode root = objectMapper.readTree(result.getResponse().getContentAsString());
+        JsonNode quest = findQuestByCode(root.path("data"), questCode);
+
+        Assertions.assertThat(quest)
+            .withFailMessage("Quest with code %s was not found", questCode)
+            .isNotNull();
+
+        return quest;
+    }
+
+    private long getQuestIdByCode(String token, String questCode) throws Exception {
+        return getQuestByCode(token, questCode).path("id").asLong();
+    }
+
+    private long getFirstClassId(String token) throws Exception {
+        MvcResult result = mockMvc.perform(get("/api/classes")
+                .header(HttpHeaders.AUTHORIZATION, bearer(token)))
+            .andExpect(status().isOk())
             .andReturn();
 
         JsonNode root = objectMapper.readTree(result.getResponse().getContentAsString());
         return root.path("data").get(0).path("id").asLong();
+    }
+
+    private void claimQuest(String token, String questCode) throws Exception {
+        long questId = getQuestIdByCode(token, questCode);
+
+        mockMvc.perform(post("/api/quests/{questId}/claim", questId)
+                .header(HttpHeaders.AUTHORIZATION, bearer(token)))
+            .andExpect(status().isOk());
+    }
+
+    private JsonNode findQuestByCode(JsonNode quests, String questCode) {
+        for (JsonNode quest : quests) {
+            if (questCode.equals(quest.path("code").asText())) {
+                return quest;
+            }
+        }
+
+        return null;
     }
 
     private String signupAndExtractToken(String email, String username) throws Exception {

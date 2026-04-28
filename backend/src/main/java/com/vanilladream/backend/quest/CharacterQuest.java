@@ -105,13 +105,13 @@ public class CharacterQuest {
             throw new IllegalArgumentException("Quest progress amount must be positive");
         }
 
-        if (status != QuestStatus.ACTIVE) {
+        if (status == QuestStatus.CLAIMED) {
             return;
         }
 
         this.progressCount += amount;
 
-        if (startedAt == null) {
+        if (status == QuestStatus.ACTIVE && startedAt == null) {
             this.startedAt = LocalDateTime.now();
         }
     }
@@ -126,10 +126,6 @@ public class CharacterQuest {
 
     public boolean isClaimed() {
         return status == QuestStatus.CLAIMED;
-    }
-
-    public boolean isTrackable() {
-        return status == QuestStatus.ACTIVE;
     }
 
     public Long getId() {
